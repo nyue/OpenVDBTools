@@ -4,6 +4,7 @@
 #include <openvdb/points/PointGroup.h>
 #include <openvdb/points/PointCount.h>
 #include <openvdb/points/PointConversion.h>
+#include <openvdb/tools/PointPartitioner.h>
 
 #include <boost/format.hpp>
 #include <boost/program_options.hpp>
@@ -11,6 +12,23 @@
 #include <stdexcept>
 
 namespace po = boost::program_options;
+
+namespace {
+
+struct PointList {
+	typedef openvdb::Vec3s PosType;
+
+	PointList(const std::vector<PosType>& points) : mPoints(&points) {}
+
+	size_t size() const { return mPoints->size(); }
+
+	void getPos(size_t n, PosType& xyz) const { xyz = (*mPoints)[n]; }
+
+protected:
+	std::vector<PosType> const * const mPoints;
+}; // PointList
+
+} // namespace
 
 int main(int argc, char** argv)
 {
@@ -52,6 +70,16 @@ int main(int argc, char** argv)
 			{
 				if (!inputPointDataGrid->empty())
 				{
+				    const float voxelSize = 0.1f;
+				    const openvdb::math::Transform::Ptr transform =
+				            openvdb::math::Transform::createLinearTransform(voxelSize);
+
+				    typedef openvdb::tools::UInt32PointPartitioner PointPartitioner;
+
+//				    PointPartitioner::Ptr partitioner =
+//				                PointPartitioner::create(pointList, *transform);
+
+#ifdef JUST_READING
 					std::cout << boost::format("PointDataGrid is empty = %1%") %
 							(inputPointDataGrid->empty()?"true":"false")
 							<< std::endl;
@@ -72,6 +100,7 @@ int main(int argc, char** argv)
 
 					openvdb::Index64 point_count = openvdb::points::pointCount(inputTree);
 					std::cout << boost::format("point_count = %1%") % point_count << std::endl;
+#endif // JUST_READING
 				}
 			}
 		}
