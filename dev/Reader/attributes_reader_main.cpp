@@ -69,6 +69,10 @@ int main(int argc, char** argv)
 							}
 						}
 						openvdb::points::AttributeHandle<openvdb::Vec3f>::Ptr handle = openvdb::points::AttributeHandle<openvdb::Vec3f>::create(leafIter->constAttributeArray("P"),true);
+						if (handle)
+							std::cout << "Handle is valid" << std::endl;
+						else
+							std::cout << "Handle is invalid" << std::endl;
 					}
 #ifdef UNUSED
 					std::cout << boost::format("PointDataGrid name = '%1%', type = '%2%', metadata count = %3%")
