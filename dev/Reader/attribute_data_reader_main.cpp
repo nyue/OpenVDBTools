@@ -55,14 +55,11 @@ int main(int argc, char** argv)
 					if (!inputPointDataGrid->tree().empty())
 					{
 
-						for (openvdb::points::PointDataTree::LeafCIter leafIter = inputPointDataGrid->tree().cbeginLeaf(); leafIter; ++leafIter) {
+						for (openvdb::points::PointDataTree::LeafCIter leafIter = inputPointDataGrid->tree().cbeginLeaf(); leafIter; ++leafIter)
+						{
 							openvdb::points::AttributeHandle<openvdb::Vec3s>::Ptr handle = openvdb::points::AttributeHandle<openvdb::Vec3s>::create(leafIter->constAttributeArray("P"));
 
-							openvdb::io::
-//							openvdb::io::
-//							openvdb::io::PointDataLeafNode<openvdb::Vec3s>::IndexOnIter a;
-
-						    for (auto iter = leafIter->beginIndexOn(); iter; ++iter)
+						    for (openvdb::points::PointDataTree::LeafNodeType::IndexOnIter iter = leafIter->beginIndexOn(); iter; ++iter)
 						    {
 						        const openvdb::Vec3d voxelCoord = iter.getCoord().asVec3d();
 						        const openvdb::Vec3d positionVoxelSpace = handle->get(*iter);
@@ -70,16 +67,6 @@ int main(int argc, char** argv)
 						        std::cerr << "Position: " << positionWorldSpace << std::endl;
 						    }
 						}
-#ifdef UNUSED
-						openvdb::points::PointDataTree::LeafCIter leafIter = inputPointDataGrid->tree().cbeginLeaf();
-						const openvdb::points::AttributeSet::Descriptor& descriptor = leafIter->attributeSet().descriptor();
-						for (const auto& namePos : descriptor.map()) {
-						    const openvdb::Name& name = namePos.first;
-						    const size_t index = namePos.second;
-						    const openvdb::Name& valueType = descriptor.valueType(index);
-						    std::cout << boost::format("Attribute[%1%] is '%2%' of type %3%") % index % name.c_str() % valueType.c_str() << std::endl;
-						}
-#endif // UNUSED
 					}
 				}
 			}
