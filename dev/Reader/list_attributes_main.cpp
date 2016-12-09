@@ -56,11 +56,14 @@ int main(int argc, char** argv)
 					{
 						openvdb::points::PointDataTree::LeafCIter leafIter = inputPointDataGrid->tree().cbeginLeaf();
 						const openvdb::points::AttributeSet::Descriptor& descriptor = leafIter->attributeSet().descriptor();
-						for (const auto& namePos : descriptor.map()) {
-						    const openvdb::Name& name = namePos.first;
-						    const size_t index = namePos.second;
-						    const openvdb::Name& valueType = descriptor.valueType(index);
-						    std::cout << boost::format("Attribute[%1%] is '%2%' of type %3%") % index % name.c_str() % valueType.c_str() << std::endl;
+						openvdb::points::AttributeSet::Descriptor::NameToPosMap::const_iterator npIter = descriptor.map().begin();
+						openvdb::points::AttributeSet::Descriptor::NameToPosMap::const_iterator npEIter = descriptor.map().end();
+						for (;npIter!=npEIter;++npIter)
+						{
+							const openvdb::Name& name = npIter->first;
+							const size_t index = npIter->second;
+							const openvdb::Name& valueType = descriptor.valueType(index);
+							std::cout << boost::format("Attribute[%1%] is '%2%' of type %3%") % index % name.c_str() % valueType.c_str() << std::endl;
 						}
 					}
 				}
