@@ -6,8 +6,12 @@ ADD_EXECUTABLE ( partitioned_reader
   partitioned_reader_main.cpp
   )
 
-ADD_EXECUTABLE ( attributes_reader
-  attributes_reader_main.cpp
+ADD_EXECUTABLE ( list_attributes
+  list_attributes_main.cpp
+  )
+
+ADD_EXECUTABLE ( attribute_data_reader
+  attribute_data_reader_main.cpp
   )
 
 TARGET_LINK_LIBRARIES ( simple_reader
@@ -18,7 +22,10 @@ TARGET_LINK_LIBRARIES ( partitioned_reader
   ${REQUIRED_OPENVDB_LINK_LIBRARIES}
   )
 
-TARGET_LINK_LIBRARIES ( attributes_reader
+TARGET_LINK_LIBRARIES ( list_attributes
   ${REQUIRED_OPENVDB_LINK_LIBRARIES}
   )
 
+TARGET_LINK_LIBRARIES ( attribute_data_reader
+  ${REQUIRED_OPENVDB_LINK_LIBRARIES}
+  )
